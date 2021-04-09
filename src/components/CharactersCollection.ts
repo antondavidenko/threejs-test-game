@@ -12,10 +12,14 @@ class CharactersCollection {
     private dwarf: Character;
     private state = 'idle';
     private yRotation = 0;
+    private onInitCAllback: () => void;
 
-    init(scene: THREE.Scene): void {
+    init(scene: THREE.Scene, callback: () => void): void {
+        this.onInitCAllback = callback;
         const animationId = 'Base@Idle';
-        this.default = new Character(scene, characterPresetsStorage.getDefaultCharacterConfig(), animationId, () => {});
+        this.default = new Character(scene, characterPresetsStorage.getDefaultCharacterConfig(), animationId, () => {
+            this.onInitCAllback();
+        });
         this.hulk = new Character(scene, JSON.parse(hulk), animationId, () => {
             this.hulk.position.x += 1.5;
         });

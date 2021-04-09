@@ -22,17 +22,15 @@ export class MainScreen {
         this.prepareScene();
         this.addSceneObjects();
         this.animate();
-
-        setTimeout(() => {
-            this.camera.lookAt(charactersCollection.selected().position);
-        }, 2000);
     }
 
     private addSceneObjects() {
         this.stats = Stats();
         document.body.appendChild(this.stats.dom);
         new WorldComponent(this.scene);
-        charactersCollection.init(this.scene);
+        charactersCollection.init(this.scene, () => {
+            this.camera.lookAt(charactersCollection.selected().position);
+        });
     }
 
     private prepareScene() {
