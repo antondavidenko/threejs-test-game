@@ -1,7 +1,4 @@
-type JoystickState = {
-    forward: number;
-    turn: number;
-}
+type MoveCallback = (forward: number, turn: number) => void
 
 type Point2D = {
     x: number;
@@ -16,8 +13,9 @@ export class JoyStick {
     private origin: {left: number, top: number};
     private offset: Point2D;
 
-    private forward = 0;
-    private turn = 0;
+    private onTouchStartCallback: () => void;
+    private onTouchMoveCallback: MoveCallback;
+    private onTouchEndCallback: () => void;
 
     constructor() {
         const circle = document.createElement("div");
@@ -37,9 +35,17 @@ export class JoyStick {
         }
     }
 
-    getState(): JoystickState {
-        return { forward: this.forward, turn: this.turn };
-    } 
+    onTouchStart(callback: () => void) {
+        this.onTouchStartCallback = callback;
+    };
+
+    onTouchMove(callback: MoveCallback) {
+        this.onTouchMoveCallback = callback;
+    };
+
+    onTouchEnd(callback: () => void) {
+        this.onTouchEndCallback = callback;
+    };
 
     private getMousePosition(event: MouseEvent & TouchEvent): Point2D {
         let clientX = event.targetTouches ? event.targetTouches[0].pageX : event.clientX;
@@ -48,6 +54,7 @@ export class JoyStick {
     }
 
     private tap(event: MouseEvent & TouchEvent): void {
+        this.onTouchStartCallback();
         event.preventDefault();
         this.offset = this.getMousePosition(event);
         if ('ontouchstart' in window){
@@ -74,11 +81,13 @@ export class JoyStick {
         this.domElement.style.top = `${top + this.domElement.clientHeight/2}px`;
         this.domElement.style.left = `${left + this.domElement.clientWidth/2}px`;
 
-        this.forward = -(top - this.origin.top + this.domElement.clientHeight/2)/maxRadius;
-        this.turn = (left - this.origin.left + this.domElement.clientWidth/2)/maxRadius;
+        const forward = -(top - this.origin.top + this.domElement.clientHeight/2)/maxRadius;
+        const turn = (left - this.origin.left + this.domElement.clientWidth/2)/maxRadius;
+        this.onTouchMoveCallback(forward, turn);
     }
 
     private up(): void {
+        this.onTouchEndCallback();
         if ('ontouchstart' in window){
             document.ontouchmove = null;
             (document as any).touchend = null;
@@ -89,8 +98,6 @@ export class JoyStick {
 
         this.domElement.style.top = `${this.origin.top}px`;
         this.domElement.style.left = `${this.origin.left}px`;
-
-        this.forward = this.turn = 0;
     }
 
 }

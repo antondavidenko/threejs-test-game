@@ -12,6 +12,7 @@ class CharactersCollection {
     private dwarf: Character;
     private state = 'idle';
     private yRotation = 0;
+    private forward = 0;
     private onInitCAllback: () => void;
 
     init(scene: THREE.Scene, callback: () => void): void {
@@ -28,20 +29,26 @@ class CharactersCollection {
         });
     }
 
-    update(joystic: JoyStick): void {
+    update(): void {
         this.default.update();
         this.hulk.update();
         this.dwarf.update();
 
-        if (!joystic || this.selected() === undefined || !this.selected().getIsReady()) return;
-
-        const { forward, turn } = joystic.getState();
-        if (forward !== 0 && turn !== 0) {
-            const angle =  this.yRotation;
-            this.selected().position.z += (forward / 1 * Math.cos(angle)) * SPEED;
-            this.selected().position.x += (forward / 1 * Math.sin(angle)) * SPEED;
-            this.yRotation -= turn / 25;
+        if (this.selected() && this.selected().getIsReady()) {
+            this.selected().rotation.x = 0;
+            this.selected().rotation.y = this.yRotation;
+            this.selected().position.z += (this.forward / 1 * Math.cos(this.yRotation)) * SPEED;
+            this.selected().position.x += (this.forward / 1 * Math.sin(this.yRotation)) * SPEED;
         }
+        if (this.dwarf && this.dwarf.getIsReady()) this.dwarf.rotation.x = 0;
+        if (this.hulk && this.hulk.getIsReady()) this.hulk.rotation.x = 0;
+    }
+
+    onTouchMove(forward: number, turn: number): void {
+        if (this.selected() === undefined || !this.selected().getIsReady()) return;
+
+        this.yRotation -= turn / 25;
+        this.forward = forward
         if (forward > 0) {
             if (this.state !== 'run') {
                 this.selected().resetAnimation('Base@Dash');
@@ -53,13 +60,6 @@ class CharactersCollection {
                 this.state = 'idle';
             }
         }
-
-        if (this.selected() && this.selected().getIsReady()) {
-            this.selected().rotation.x = 0;
-            this.selected().rotation.y = this.yRotation;
-        }
-        if (this.dwarf && this.dwarf.getIsReady()) this.dwarf.rotation.x = 0;
-        if (this.hulk && this.hulk.getIsReady()) this.hulk.rotation.x = 0;
     }
 
     selected(): Character {

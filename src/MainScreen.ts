@@ -42,6 +42,15 @@ export class MainScreen {
             this.controls = getControls(this.camera, this.renderer);
         } else if (this.controlType === 'joystic') {
             this.controls = new JoyStick();
+            this.controls.onTouchStart(() => {
+                console.log('DOWN!');
+            });
+            this.controls.onTouchMove((forward: number, turn: number) => {
+                charactersCollection.onTouchMove(forward, turn);
+            });
+            this.controls.onTouchEnd(() => {
+                charactersCollection.onTouchMove(0, 0);
+            });
         }
 
         window.addEventListener('resize', this.onWindowResize.bind(this), false);
@@ -63,19 +72,18 @@ export class MainScreen {
         requestAnimationFrame(this.animate.bind(this));
         if (this.controlType === 'orbit') {
             (this.controls as OrbitControls).update();
-            charactersCollection.update(null);
-        } else if (this.controlType === 'joystic') {
-            charactersCollection.update(this.controls as JoyStick);
+        } else {
             this.updateCamera();
         }
+        charactersCollection.update();
+
         this.renderScreen();
         this.stats.update();
         updateShaderMaterial();
     }
 
     private updateCamera(): void {
-        const { forward, turn } = (this.controls as JoyStick).getState();
-        if (forward !== 0 && turn !== 0) {
+        if (charactersCollection.selected().getIsReady()) {
             const pos = charactersCollection.selected().position.clone();
             const angle = charactersCollection.selected().rotation.y;
             pos.y += 2;
