@@ -1,0 +1,27 @@
+{
+  "name": "character-constructor",
+  "version": "1.0.0",
+  "typings": "typings.d.ts",
+  "description": "",
+  "main": "app.ts",
+  "scripts": {
+    "start": "webpack"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@antondavidenko/modular-character-threejs": "^0.0.5",
+    "three": "^0.126.1",
+    "ts-loader": "4.4.2",
+    "typescript": "2.9.2"
+  },
+  "devDependencies": {
+    "@types/jquery": "^3.5.1",
+    "@types/three": "^0.126.0",
+    "elliptic": "^6.5.4",
+    "jquery": "^3.5.1",
+    "serialize-javascript": "^3.1.0",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11"
+  }
+}

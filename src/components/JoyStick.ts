@@ -1,0 +1,96 @@
+type JoystickState = {
+    forward: number;
+    turn: number;
+}
+
+type Point2D = {
+    x: number;
+    y: number;
+}
+
+const maxRadius = 40;
+
+export class JoyStick {
+
+    private domElement: HTMLDivElement;
+    private origin: {left: number, top: number};
+    private offset: Point2D;
+
+    private forward = 0;
+    private turn = 0;
+
+    constructor() {
+        const circle = document.createElement("div");
+        circle.style.cssText = "position:absolute; bottom:35px; width:80px; height:80px; background:rgba(126, 126, 126, 0.5); border:#444 solid medium; border-radius:50%; left:10%; transform:translateX(-50%);";
+        this.domElement = document.createElement("div");
+        this.domElement.style.cssText = "position: absolute; left: 20px; top: 20px; width: 40px; height: 40px; border-radius: 50%; background: #fff;";
+        circle.appendChild(this.domElement);
+        document.body.appendChild(circle);
+        this.origin = { left:this.domElement.offsetLeft, top:this.domElement.offsetTop };
+
+        if (this.domElement!=undefined){
+            if ('ontouchstart' in window){
+                this.domElement.addEventListener('touchstart', this.tap.bind(this));
+            } else {
+                this.domElement.addEventListener('mousedown', this.tap.bind(this));
+            }
+        }
+    }
+
+    getState(): JoystickState {
+        return { forward: this.forward, turn: this.turn };
+    } 
+
+    private getMousePosition(event: MouseEvent & TouchEvent): Point2D {
+        let clientX = event.targetTouches ? event.targetTouches[0].pageX : event.clientX;
+        let clientY = event.targetTouches ? event.targetTouches[0].pageY : event.clientY;
+        return { x:clientX, y:clientY };
+    }
+
+    private tap(event: MouseEvent & TouchEvent): void {
+        event.preventDefault();
+        this.offset = this.getMousePosition(event);
+        if ('ontouchstart' in window){
+            document.ontouchmove = this.move.bind(this);
+            document.ontouchend = this.up.bind(this);
+        } else {
+            document.onmousemove = this.move.bind(this);
+            document.onmouseup = this.up.bind(this);
+        }
+    }
+
+    private move(event: MouseEvent & TouchEvent): void {
+        const mouse = this.getMousePosition(event);
+        let left = mouse.x - this.offset.x;
+        let top = mouse.y - this.offset.y;
+        const sqMag = left*left + top*top;
+        if (sqMag>(maxRadius * maxRadius)) {
+            const magnitude = Math.sqrt(sqMag);
+            left /= magnitude;
+            top /= magnitude;
+            left *= maxRadius;
+            top *= maxRadius;
+        }
+        this.domElement.style.top = `${top + this.domElement.clientHeight/2}px`;
+        this.domElement.style.left = `${left + this.domElement.clientWidth/2}px`;
+
+        this.forward = -(top - this.origin.top + this.domElement.clientHeight/2)/maxRadius;
+        this.turn = (left - this.origin.left + this.domElement.clientWidth/2)/maxRadius;
+    }
+
+    private up(): void {
+        if ('ontouchstart' in window){
+            document.ontouchmove = null;
+            (document as any).touchend = null;
+        } else {
+            document.onmousemove = null;
+            document.onmouseup = null;
+        }
+
+        this.domElement.style.top = `${this.origin.top}px`;
+        this.domElement.style.left = `${this.origin.left}px`;
+
+        this.forward = this.turn = 0;
+    }
+
+}
