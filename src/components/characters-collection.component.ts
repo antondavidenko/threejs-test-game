@@ -1,5 +1,4 @@
 import { Character, characterPresetsStorage } from '@antondavidenko/modular-character-threejs';
-import { JoyStick } from './JoyStick';
 
 const SPEED = 0.25;
 const hulk = '{"baseFBX":"BaseNormal","hairFBX":"HairMale11","hatFBX":null,"headDecor1FBX":null,"headDecor2FBX":null,"hairColor":"#32261d","clothesTexture":"barbarian","skinColor":"#8b9826","eyesTexture":"eyes10","mouthTexture":"mouth05","clothesColor1":"#55861d","clothesColor2":"#221c12","leftHandSlot":"none","rightHandSlot":"none","backSlot":"none","bodyType":{"body":{"x":0.015,"y":0.018,"z":0.015},"head":{"x":0.5,"y":0.4,"z":0.6},"headOffset":24}}';

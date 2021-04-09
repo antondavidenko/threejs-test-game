@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { GROUND_SCALE } from '../WorldComponent';
+import { GROUND_SCALE } from '../world.component';
 import { getShaderMaterial } from '@src/utils/shaderMaterials/shaderMaterialLava';
 
 export function addLava(scene: THREE.Scene) {

@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { getImageData } from './getImageData';
 import * as math from './math';
-import { GROUND_SCALE } from '../WorldComponent';
+import { GROUND_SCALE } from '../world.component';
 
 export class Heightmap {
 

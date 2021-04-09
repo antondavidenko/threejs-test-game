@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import {HeightGenerator} from './HeightGenerator';
 import {Heightmap} from './Heightmap';
-import { GROUND_SCALE } from '../WorldComponent';
+import { GROUND_SCALE } from '../world.component';
 
 const DETAILS = 128; //128
 

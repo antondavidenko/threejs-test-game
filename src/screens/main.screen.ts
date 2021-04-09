@@ -1,12 +1,8 @@
 import * as THREE from 'three';
 import Stats from 'three/examples/jsm/libs/stats.module';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { getCamera, getRender, getControls, setLight } from './utils/scene/';
-import { updateFPS } from './utils/counterFPS';
-import { updateShaderMaterial } from './utils/shaderMaterials/shaderMaterialLava';
-import { WorldComponent } from './components/world/WorldComponent';
-import { charactersCollection } from './components/CharactersCollection';
-import { JoyStick } from './components/JoyStick';
+import { updateShaderMaterial, updateFPS, getCamera, getRender, getControls, setLight } from '../utils/';
+import { JoyStick, charactersCollection, WorldComponent } from '../components/';
 
 type ControlType = 'joystic' | 'orbit';
 

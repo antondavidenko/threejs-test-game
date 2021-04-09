@@ -1,4 +1,4 @@
-import { MainScreen } from './MainScreen';
+import { MainScreen } from './screens/main.screen';
 import { initStorage } from '@antondavidenko/modular-character-threejs';
 
 export const CDN_ROOT = "/show/chr_cdn_v1/";
