@@ -1,5 +1,4 @@
-interface Person {
-    firstName: string;
-    lastName: string;
-    age: number;
+declare module "*.json" {
+  const value: any;
+  export default value;
 }
