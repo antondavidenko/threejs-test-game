@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { loadFBX } from '@src/utils/loadFBX';
 
 export async function addTrees(scene: THREE.Scene) {
-  const forest: THREE.Group = await loadFBX('models/forest.FBX');
+  const forest: THREE.Group = await loadFBX('models/trees.FBX');
   const pine1 = forest.getObjectByName('Fir_v1_1').clone();
   scene.add(pine1);
   pine1.position.x = 5;
