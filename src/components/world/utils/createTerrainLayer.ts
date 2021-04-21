@@ -5,7 +5,7 @@ import { GROUND_SCALE } from '../world.component';
 
 const DETAILS = 128; //128
 
-export function createTerrainLayer(scene: THREE.Scene, hightMap: string, material: THREE.MeshPhongMaterial, offsetZ: number, highScale: number): void {
+export function createTerrainLayer(scene: THREE.Group, hightMap: string, material: THREE.MeshPhongMaterial, offsetZ: number, highScale: number): void {
     const manager = new THREE.LoadingManager();
     const loader = new THREE.TextureLoader(manager);
     loader.load(hightMap, (result) => {

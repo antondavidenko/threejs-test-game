@@ -1,4 +1,5 @@
 import { Character, characterPresetsStorage } from '@antondavidenko/modular-character-threejs';
+import { worldComponent } from './world/world.component';
 
 const SPEED = 0.25;
 const hulk = '{"baseFBX":"BaseNormal","hairFBX":"HairMale11","hatFBX":null,"headDecor1FBX":null,"headDecor2FBX":null,"hairColor":"#32261d","clothesTexture":"barbarian","skinColor":"#8b9826","eyesTexture":"eyes10","mouthTexture":"mouth05","clothesColor1":"#55861d","clothesColor2":"#221c12","leftHandSlot":"none","rightHandSlot":"none","backSlot":"none","bodyType":{"body":{"x":0.015,"y":0.018,"z":0.015},"head":{"x":0.5,"y":0.4,"z":0.6},"headOffset":24}}';
@@ -38,6 +39,8 @@ class CharactersCollection {
             this.selected().rotation.y = this.yRotation;
             this.selected().position.z += (this.forward / 1 * Math.cos(this.yRotation)) * SPEED;
             this.selected().position.x += (this.forward / 1 * Math.sin(this.yRotation)) * SPEED;
+            const terrainHigh = worldComponent.getTerrainHigh(this.selected().position.x, this.selected().position.z);
+            this.selected().position.y = terrainHigh;
         }
         if (this.dwarf && this.dwarf.getIsReady()) this.dwarf.rotation.x = 0;
         if (this.hulk && this.hulk.getIsReady()) this.hulk.rotation.x = 0;

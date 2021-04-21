@@ -27,15 +27,35 @@ function waterMaterial(fileName: string): THREE.MeshPhongMaterial {
   return material;
 }
 
-export class WorldComponent {
+class WorldComponent {
 
-  constructor(private scene: THREE.Scene) {
-    addSkyBox(this.scene);
-    createTerrainLayer(this.scene, getTexture('map_ground'), planeMaterial('ground'), -32.4, 64);
-    createTerrainLayer(this.scene, getTexture('map_rock'), planeMaterial('rock'), -32.6, 64);
-    createTerrainLayer(this.scene, getTexture('map_sand'), planeMaterial('sand'), -32.42, 64);
-    createTerrainLayer(this.scene, getTexture('map_sand'), waterMaterial('water'), -1, 0);
-    addTrees(this.scene);
+  private terrain = new THREE.Group();
+
+  init(scene: THREE.Scene) {
+    addSkyBox(scene);
+    createTerrainLayer(this.terrain, getTexture('map_ground'), planeMaterial('ground'), -32.4, 64);
+    createTerrainLayer(this.terrain, getTexture('map_rock'), planeMaterial('rock'), -32.6, 64);
+    createTerrainLayer(this.terrain, getTexture('map_sand'), planeMaterial('sand'), -32.42, 64);
+    createTerrainLayer(this.terrain, getTexture('map_sand'), waterMaterial('water'), -1, 0);
+    scene.add(this.terrain);
+    addTrees(scene);
+  }
+
+  getTerrainHigh(x: number, y: number): number {
+    const raycast = new THREE.Raycaster();
+    const from = new THREE.Vector3(x, 1000, y);
+    var to = new THREE.Vector3(0, -1, 0);
+    raycast.set(from, to.normalize());
+    var intersection = raycast.intersectObject(this.terrain, true);
+    return intersection[0] ? 1000 - this.findMaxDistance(intersection) : 0;
+  }
+
+  private findMaxDistance(intersection: THREE.Intersection[]): number {
+    return intersection.reduce((min: THREE.Intersection, currentValue: THREE.Intersection) => {
+      return min.distance < currentValue.distance ? min : currentValue;
+    }).distance;
   }
 
 }
+
+export const worldComponent = new WorldComponent();

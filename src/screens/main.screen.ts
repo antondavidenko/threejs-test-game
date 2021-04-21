@@ -1,6 +1,6 @@
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { getControls } from '../utils/';
-import { JoyStick, charactersCollection, WorldComponent } from '../components/';
+import { JoyStick, charactersCollection, worldComponent } from '../components/';
 import { TransitionsLogicEngine } from '@antondavidenko/fsm';
 import { slotMachineDefinition } from '@src/models/fsm';
 import { initAllStates } from '@src/states';
@@ -35,7 +35,7 @@ export class MainScreen extends AbstractScreen {
   }
 
   private addSceneObjects(): void {
-    new WorldComponent(this.scene);
+    worldComponent.init(this.scene);
     charactersCollection.init(this.scene, () => {
       this.camera.lookAt(charactersCollection.selected().position);
     });
