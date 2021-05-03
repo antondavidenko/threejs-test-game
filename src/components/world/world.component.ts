@@ -42,7 +42,6 @@ class WorldComponent {
     scene.add(this.terrain);
     addTrees(this.forest, getTexture('map_trees'), this.getTerrainHigh.bind(this));
     scene.add(this.forest);
-    // this.forest.rotateY(Math.PI / 2);
   }
 
   getTerrainHigh(x: number, y: number): number {

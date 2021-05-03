@@ -7,8 +7,16 @@ const tree2 = 'Fir_v1_2';
 let forest: THREE.Group = null;
 let treeCounter = 0;
 
-export async function addTrees(scene: THREE.Group, tree_map: string, getTerrainHigh: (x: number, y: number) => number) {
-  forest = await loadFBX('models/trees.FBX');
+type ColorDataRGB = {
+  r: number,
+  g: number,
+  b: number,
+}
+
+type TerrainHighGetter = (x: number, y: number) => number;
+
+export async function addTrees(scene: THREE.Group, tree_map: string, getTerrainHigh: TerrainHighGetter) {
+  forest = await loadFBX('models/trees.fbx');
 
   const manager = new THREE.LoadingManager();
   const loader = new THREE.TextureLoader(manager);
@@ -17,24 +25,22 @@ export async function addTrees(scene: THREE.Group, tree_map: string, getTerrainH
 
     for(let x = 0; x < 128; x++) {
       for(let y = 0; y < 128; y++) {
-        const pixelDataG = getPixelAsFloat(y, x, data, 1);
-
-        if (pixelDataG > 200) {
-          const tx = (x - 65) * 1.55;
-          const tz = (y - 65) * 1.55;
-          const ty = getTerrainHigh(tx, tz);
-          addTree(scene, tree1, new THREE.Vector3(tx, ty, tz));
-        }
-        const pixelDataR = getPixelAsFloat(y, x, data, 0);
-        if (pixelDataR > 200) {
-          const tx = (x - 65) * 1.55;
-          const tz = (y - 65) * 1.55;
-          const ty = getTerrainHigh(tx, tz);
-         addTree(scene, tree2, new THREE.Vector3(tx, ty, tz));
+        const pixelData = getPixelAsFloat(y, x, data);
+        if (pixelData.g > 200) {
+          addTree(scene, tree1, getTreePosition(x, y, getTerrainHigh));
+        } else if (pixelData.r > 200) {
+         addTree(scene, tree2, getTreePosition(x, y, getTerrainHigh));
         }
       }
     }
   });
+}
+
+function getTreePosition(x: number, y: number, getTerrainHigh: TerrainHighGetter): THREE.Vector3 {
+  const tx = (x - 65) * 1.55;
+  const tz = (y - 65) * 1.55;
+  const ty = getTerrainHigh(tx, tz);
+ return new THREE.Vector3(tx, ty, tz);
 }
 
 async function addTree(scene: THREE.Group, treeId: string, position: THREE.Vector3) {
@@ -55,7 +61,9 @@ async function addTree(scene: THREE.Group, treeId: string, position: THREE.Vecto
   (pine as THREE.Mesh).receiveShadow = true;
 }
 
-function getPixelAsFloat(x, y, data, colorId): any {
-  const position = ((x * (data.width * 4)) + (y * 4) + colorId);
-  return data.data[position];
+function getPixelAsFloat(x: number, y: number, data): ColorDataRGB {
+  const positionR = ((x * (data.width * 4)) + (y * 4) + 0);
+  const positionG = ((x * (data.width * 4)) + (y * 4) + 1);
+  const positionB = ((x * (data.width * 4)) + (y * 4) + 2);
+  return { r: data.data[positionR], g: data.data[positionG], b: data.data[positionB]};
 }
