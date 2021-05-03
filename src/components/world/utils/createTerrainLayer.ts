@@ -1,9 +1,7 @@
 import * as THREE from 'three';
 import {HeightGenerator} from './HeightGenerator';
 import {Heightmap} from './Heightmap';
-import { GROUND_SCALE } from '../world.component';
-
-const DETAILS = 128; //128
+import { GROUND_SCALE, DETAILS } from '../world.component';
 
 export function createTerrainLayer(scene: THREE.Group, hightMap: string, material: THREE.MeshPhongMaterial, offsetZ: number, highScale: number): void {
     const manager = new THREE.LoadingManager();

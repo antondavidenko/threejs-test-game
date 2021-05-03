@@ -4,6 +4,7 @@ import { addSkyBox } from './utils/addSkyBox';
 import { createTerrainLayer } from './utils/CreateTerrainLayer';
 
 export const GROUND_SCALE = 200;
+export const DETAILS = 128;
 
 function getTexture(fileName: string): string {
   return `textures/panorama/${fileName}.jpg`;
@@ -30,6 +31,7 @@ function waterMaterial(fileName: string): THREE.MeshPhongMaterial {
 class WorldComponent {
 
   private terrain = new THREE.Group();
+  private forest = new THREE.Group();
 
   init(scene: THREE.Scene) {
     addSkyBox(scene);
@@ -38,7 +40,9 @@ class WorldComponent {
     createTerrainLayer(this.terrain, getTexture('map_sand'), planeMaterial('sand'), -32.42, 64);
     createTerrainLayer(this.terrain, getTexture('map_sand'), waterMaterial('water'), -1, 0);
     scene.add(this.terrain);
-    addTrees(scene);
+    addTrees(this.forest, getTexture('map_trees'), this.getTerrainHigh.bind(this));
+    scene.add(this.forest);
+    // this.forest.rotateY(Math.PI / 2);
   }
 
   getTerrainHigh(x: number, y: number): number {
