@@ -1,10 +1,10 @@
-# Character constructor tool
+# Character constructor & World constructor demo game
 
 language: TypeScript
  
 framework: THREE JS
 
-Demo: http://antondavidenko.com/show/char_v5/
+Demo: http://antondavidenko.com/games/arpg3d_v2/
 
 
 # Setup
