@@ -9,7 +9,8 @@ import { AbstractScreen } from './abstract.screen';
 type ControlType = 'joystic' | 'orbit';
 
 export interface IStateContext {
-  dispatchEvent(eventId: string): void;
+  dispatchEvent: (eventId: string) => void;
+  renderCanvas: HTMLCanvasElement;
 }
 
 export class MainScreen extends AbstractScreen {
@@ -31,6 +32,7 @@ export class MainScreen extends AbstractScreen {
   private getStateContext(): IStateContext {
     return {
       dispatchEvent: this.levelFSM.dispatchEvent,
+      renderCanvas: this.renderer.domElement,
     };
   }
 

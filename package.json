@@ -1,5 +1,5 @@
 {
-  "name": "character-constructor & world-constructor demo game",
+  "name": "character-constructor-and-world-constructor-demo-game",
   "version": "1.0.0",
   "typings": "typings.d.ts",
   "description": "",
@@ -10,8 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@antondavidenko/modular-character-threejs": "^0.0.5",
     "@antondavidenko/fsm": "^0.0.2",
+    "@antondavidenko/modular-character-threejs": "^0.0.5",
+    "pixi.js": "5.3.3",
     "three": "^0.126.1",
     "ts-loader": "4.4.2",
     "typescript": "2.9.2"
