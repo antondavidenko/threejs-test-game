@@ -1,4 +1,5 @@
 import { Character, characterPresetsStorage } from '@antondavidenko/modular-character-threejs';
+import { promiseDelay } from '@src/utils/promise-delay';
 import { worldComponent } from './world/world.component';
 
 const SPEED = 0.25;
@@ -66,6 +67,18 @@ class CharactersCollection {
 
     selected(): Character {
         return this.default;
+    }
+
+    async onJump() {
+        this.selected().resetAnimation('Base@Jump');
+        await promiseDelay(500);
+        this.selected().resetAnimation('Base@Idle');
+    }
+
+    async onHit() {
+        this.selected().resetAnimation('Base@ChopTree');
+        await promiseDelay(500);
+        this.selected().resetAnimation('Base@Idle');
     }
 
 }

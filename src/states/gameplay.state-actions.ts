@@ -17,7 +17,11 @@ export function getGameplayStateActions(context: IStateContext): StateActions {
       charactersCollection.onTouchMove(event.joystic.y / -240, event.joystic.x / 240);
     },
     touchStart: (event: UiEvent) => {
-      console.log(event);
+      if (event.buttonA) {
+        charactersCollection.onHit();
+      } else if (event.buttonB) {
+        charactersCollection.onJump();
+      }
     }
   };
 }

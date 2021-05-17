@@ -74,7 +74,7 @@ export class MainScreen extends AbstractScreen {
       const pos = charactersCollection.selected().position.clone();
       const angle = charactersCollection.selected().rotation.y;
       pos.y += 2;
-      pos.z -= 4 * Math.cos(angle);
+      pos.z -= 5 * Math.cos(angle);
       pos.x -= 4 * Math.sin(angle);
       this.camera.position.lerp(pos, 0.05);
       this.camera.lookAt(charactersCollection.selected().position);
