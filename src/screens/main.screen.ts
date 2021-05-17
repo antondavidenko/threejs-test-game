@@ -1,6 +1,6 @@
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { getControls } from '../utils/';
-import { JoyStick, charactersCollection, worldComponent } from '../components/';
+import { pixiUI, charactersCollection, worldComponent } from '@src/components/';
 import { TransitionsLogicEngine } from '@antondavidenko/fsm';
 import { slotMachineDefinition } from '@src/models/fsm';
 import { initAllStates } from '@src/states';
@@ -10,12 +10,11 @@ type ControlType = 'joystic' | 'orbit';
 
 export interface IStateContext {
   dispatchEvent: (eventId: string) => void;
-  renderCanvas: HTMLCanvasElement;
 }
 
 export class MainScreen extends AbstractScreen {
 
-  private controls: OrbitControls | JoyStick;
+  private controls: OrbitControls;
   private levelFSM: TransitionsLogicEngine;
 
   constructor(private controlType: ControlType) {
@@ -32,7 +31,6 @@ export class MainScreen extends AbstractScreen {
   private getStateContext(): IStateContext {
     return {
       dispatchEvent: this.levelFSM.dispatchEvent,
-      renderCanvas: this.renderer.domElement,
     };
   }
 
@@ -43,11 +41,11 @@ export class MainScreen extends AbstractScreen {
     });
   }
 
-  private initInput(input: JoyStick): void {
+  private initInput(): void {
     if (this.controlType === 'joystic') {
-      input.onTouchStart(this.levelFSM.onTouchStart);
-      input.onTouchMove(this.levelFSM.onTouchMove);
-      input.onTouchEnd(this.levelFSM.onTouchEnd);
+      pixiUI.onTouchStart(this.levelFSM.onTouchStart);
+      pixiUI.onTouchMove(this.levelFSM.onTouchMove);
+      pixiUI.onTouchEnd(this.levelFSM.onTouchEnd);
     }
   }
 
@@ -55,8 +53,8 @@ export class MainScreen extends AbstractScreen {
     if (this.controlType === 'orbit') {
       this.controls = getControls(this.camera, this.renderer);
     } else if (this.controlType === 'joystic') {
-      this.controls = new JoyStick();
-      this.initInput(this.controls);
+      this.initInput();
+      pixiUI.init(this.renderer.domElement);
     }
   }
 
