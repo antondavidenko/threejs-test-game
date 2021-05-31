@@ -62,6 +62,9 @@ class PixiUI {
     this.buttonB.setXY(window.innerWidth - 100, window.innerHeight - 100);
     this.joystic.setXY(220, window.innerHeight - 180);
     this.logo.setXY(window.innerWidth - 100, 150);
+    this.app.view.style.setProperty('height', `${window.innerHeight}px`);
+    this.app.view.style.setProperty('width', `${window.innerWidth}px`);
+    this.app.resizeTo = window;
   }
 
   private onButtonPressed(buttonId: string): void {

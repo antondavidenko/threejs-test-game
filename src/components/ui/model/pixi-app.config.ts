@@ -5,5 +5,4 @@ export const PIXI_APP_CONFIG = {
   resolution: window.devicePixelRatio || 1,
   antialias: true,
   transparent: true,
-  resizeTo: window,
 }
