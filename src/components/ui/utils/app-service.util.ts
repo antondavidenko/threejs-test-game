@@ -9,6 +9,7 @@ class DefaultPixiApp {
   get(): PIXI.Application {
     return this.app;
   }
+
 }
 
 export const defaultPixiApp = new DefaultPixiApp();

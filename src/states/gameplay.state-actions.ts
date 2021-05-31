@@ -1,8 +1,8 @@
 import { StateActions } from '@antondavidenko/fsm';
-import { IStateContext } from '../screens/main.screen';
-import { LevelEvents } from '../models/fsm/fsm.enum';
 import { charactersCollection } from '@src/components';
 import { UiEvent } from '@src/components/ui/ui.pixi.component';
+import { IStateContext } from '../screens/main.screen';
+import { LevelEvents } from '../models/fsm/fsm.enum';
 
 export function getGameplayStateActions(context: IStateContext): StateActions {
   return {
@@ -22,6 +22,6 @@ export function getGameplayStateActions(context: IStateContext): StateActions {
       } else if (event.buttonB) {
         charactersCollection.onJump();
       }
-    }
+    },
   };
 }

@@ -16,7 +16,7 @@ export class HeightGenerator {
       this.radius = [minRadius, maxRadius];
       this.generator = generator;
     }
-  
+
     get(x: number, y: number): number[] {
       const distance = this.position.distanceTo(new THREE.Vector2(x, y));
       const value = (distance - this.radius[0]) / (this.radius[1] - this.radius[0]);

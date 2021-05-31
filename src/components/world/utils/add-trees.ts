@@ -23,13 +23,13 @@ export async function addTrees(scene: THREE.Group, tree_map: string, getTerrainH
   loader.load(tree_map, (result: THREE.Texture) => {
     const data = getImageData(result.image, true);
 
-    for(let x = 0; x < 128; x++) {
-      for(let y = 0; y < 128; y++) {
+    for (let x = 0; x < 128; x++) {
+      for (let y = 0; y < 128; y++) {
         const pixelData = getPixelAsFloat(y, x, data);
         if (pixelData.g > 200) {
           addTree(scene, tree1, getTreePosition(x, y, getTerrainHigh));
         } else if (pixelData.r > 200) {
-         addTree(scene, tree2, getTreePosition(x, y, getTerrainHigh));
+          addTree(scene, tree2, getTreePosition(x, y, getTerrainHigh));
         }
       }
     }
@@ -40,7 +40,7 @@ function getTreePosition(x: number, y: number, getTerrainHigh: TerrainHighGetter
   const tx = (x - 65) * 1.55;
   const tz = (y - 65) * 1.55;
   const ty = getTerrainHigh(tx, tz);
- return new THREE.Vector3(tx, ty, tz);
+  return new THREE.Vector3(tx, ty, tz);
 }
 
 async function addTree(scene: THREE.Group, treeId: string, position: THREE.Vector3) {
@@ -53,7 +53,7 @@ async function addTree(scene: THREE.Group, treeId: string, position: THREE.Vecto
   pine.position.set(position.x, position.y, position.z);
   pine.scale.setScalar(treeId === tree1 ? 1 : 2);
 
-  const map = ((pine as THREE.Mesh).material as any).map;
+  const { map } = ((pine as THREE.Mesh).material as any);
   const newMaterial = new THREE.MeshBasicMaterial({ map });
 
   (pine as THREE.Mesh).material = newMaterial;

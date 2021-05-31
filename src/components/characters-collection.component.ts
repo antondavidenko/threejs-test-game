@@ -8,78 +8,78 @@ const dwarf = '{"baseFBX":"BaseRobe01","hairFBX":"HairMale04","hatFBX":"Helmet 0
 
 class CharactersCollection {
 
-    private default: Character;
-    private hulk: Character;
-    private dwarf: Character;
-    private state = 'idle';
-    private yRotation = 0;
-    private forward = 0;
-    private onInitCAllback: () => void;
+  private default: Character;
+  private hulk: Character;
+  private dwarf: Character;
+  private state = 'idle';
+  private yRotation = 0;
+  private forward = 0;
+  private onInitCAllback: () => void;
 
-    init(scene: THREE.Scene, callback: () => void): void {
-        this.onInitCAllback = callback;
-        const animationId = 'Base@Idle';
-        this.default = new Character(scene, characterPresetsStorage.getDefaultCharacterConfig(), animationId, () => {
-            this.onInitCAllback();
-        });
-        this.hulk = new Character(scene, JSON.parse(hulk), animationId, () => {
-            this.hulk.position.x += 1.5;
-        });
-        this.dwarf = new Character(scene, JSON.parse(dwarf), animationId, () => {
-            this.dwarf.position.x -= 1.5;
-        });
+  init(scene: THREE.Scene, callback: () => void): void {
+    this.onInitCAllback = callback;
+    const animationId = 'Base@Idle';
+    const defaultCong = characterPresetsStorage.getDefaultCharacterConfig();
+    this.default = new Character(scene, defaultCong, animationId, () => {
+      this.onInitCAllback();
+    });
+    this.hulk = new Character(scene, JSON.parse(hulk), animationId, () => {
+      this.hulk.position.x += 1.5;
+    });
+    this.dwarf = new Character(scene, JSON.parse(dwarf), animationId, () => {
+      this.dwarf.position.x -= 1.5;
+    });
+  }
+
+  update(): void {
+    this.default.update();
+    this.hulk.update();
+    this.dwarf.update();
+
+    if (this.selected() && this.selected().getIsReady()) {
+      const { position, rotation } = this.selected();
+      rotation.x = 0;
+      rotation.y = this.yRotation;
+      position.z += ((this.forward / 1) * Math.cos(this.yRotation)) * SPEED;
+      position.x += ((this.forward / 1) * Math.sin(this.yRotation)) * SPEED;
+      const terrainHigh = worldComponent.getTerrainHigh(position.x, position.z);
+      position.y = terrainHigh;
     }
+    if (this.dwarf && this.dwarf.getIsReady()) this.dwarf.rotation.x = 0;
+    if (this.hulk && this.hulk.getIsReady()) this.hulk.rotation.x = 0;
+  }
 
-    update(): void {
-        this.default.update();
-        this.hulk.update();
-        this.dwarf.update();
+  onTouchMove(forward: number, turn: number): void {
+    if (this.selected() === undefined || !this.selected().getIsReady()) return;
 
-        if (this.selected() && this.selected().getIsReady()) {
-            this.selected().rotation.x = 0;
-            this.selected().rotation.y = this.yRotation;
-            this.selected().position.z += (this.forward / 1 * Math.cos(this.yRotation)) * SPEED;
-            this.selected().position.x += (this.forward / 1 * Math.sin(this.yRotation)) * SPEED;
-            const terrainHigh = worldComponent.getTerrainHigh(this.selected().position.x, this.selected().position.z);
-            this.selected().position.y = terrainHigh;
-        }
-        if (this.dwarf && this.dwarf.getIsReady()) this.dwarf.rotation.x = 0;
-        if (this.hulk && this.hulk.getIsReady()) this.hulk.rotation.x = 0;
+    this.yRotation -= turn / 25;
+    this.forward = forward;
+    if (forward > 0) {
+      if (this.state !== 'run') {
+        this.selected().resetAnimation('Base@Dash');
+        this.state = 'run';
+      }
+    } else if (this.state !== 'idle') {
+      this.selected().resetAnimation('Base@Idle');
+      this.state = 'idle';
     }
+  }
 
-    onTouchMove(forward: number, turn: number): void {
-        if (this.selected() === undefined || !this.selected().getIsReady()) return;
+  selected(): Character {
+    return this.default;
+  }
 
-        this.yRotation -= turn / 25;
-        this.forward = forward
-        if (forward > 0) {
-            if (this.state !== 'run') {
-                this.selected().resetAnimation('Base@Dash');
-                this.state = 'run';
-            }
-        } else {
-            if (this.state !== 'idle' ) {
-                this.selected().resetAnimation('Base@Idle');
-                this.state = 'idle';
-            }
-        }
-    }
+  async onJump() {
+    this.selected().resetAnimation('Base@Jump');
+    await promiseDelay(500);
+    this.selected().resetAnimation('Base@Idle');
+  }
 
-    selected(): Character {
-        return this.default;
-    }
-
-    async onJump() {
-        this.selected().resetAnimation('Base@Jump');
-        await promiseDelay(500);
-        this.selected().resetAnimation('Base@Idle');
-    }
-
-    async onHit() {
-        this.selected().resetAnimation('Base@ChopTree');
-        await promiseDelay(500);
-        this.selected().resetAnimation('Base@Idle');
-    }
+  async onHit() {
+    this.selected().resetAnimation('Base@ChopTree');
+    await promiseDelay(500);
+    this.selected().resetAnimation('Base@Idle');
+  }
 
 }
 

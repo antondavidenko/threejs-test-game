@@ -6,7 +6,7 @@ export class UiImage {
   private sprite: PIXI.Sprite;
 
   constructor(imageURL: string) {
-    var texture = PIXI.Texture.from(imageURL);
+    const texture = PIXI.Texture.from(imageURL);
     this.sprite = new PIXI.Sprite(texture);
     this.sprite.anchor.set(0.5);
     defaultPixiApp.get().stage.addChild(this.sprite);
@@ -14,6 +14,6 @@ export class UiImage {
 
   setXY(x: number, y: number): void {
     this.sprite.position.set(x, y);
-  }  
+  }
 
 }

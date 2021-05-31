@@ -1,5 +1,5 @@
-import { InteractionEvent } from "pixi.js";
-import { UiCircle } from "../drawing/ui.drawing.circle";
+import { InteractionEvent } from 'pixi.js';
+import { UiCircle } from '../drawing/ui.drawing.circle';
 
 export type JoysticEvent = {
   x: number;
@@ -36,17 +36,17 @@ export class UiSimpleJoystic {
   }
 
   private stopFollow(): void {
-    const {x, y} = this.background.getXY();
+    const { x, y } = this.background.getXY();
     this.background.getGraphics().off('pointermove');
     this.target.setXY(x, y);
-    this.onTouchEndCallback({x: 0, y: 0});
+    this.onTouchEndCallback({ x: 0, y: 0 });
   }
 
   private onMove(event: InteractionEvent): void {
     const { x, y } = this.getNormalized(event.data.global);
     this.target.setXY(x, y);
     const center = this.background.getXY();
-    this.onTouchMoveCallback( {x: x - center.x, y: y - center.y });
+    this.onTouchMoveCallback({ x: x - center.x, y: y - center.y });
   }
 
   setXY(x: number, y: number): void {
@@ -58,20 +58,20 @@ export class UiSimpleJoystic {
     const center = this.background.getXY();
     const cathetus1 = point.x - center.x;
     const cathetus2 = point.y - center.y;
-    const hypotenuse = Math.sqrt(cathetus1*cathetus1 + cathetus2*cathetus2);
+    const hypotenuse = Math.sqrt(cathetus1 * cathetus1 + cathetus2 * cathetus2);
     const angle = Math.atan2(cathetus1, cathetus2);
     const distance = hypotenuse > 120 ? 120 : hypotenuse;
     const x = center.x + distance * Math.sin(angle);
     const y = center.y + distance * Math.cos(angle);
-    return {x, y};
+    return { x, y };
   }
 
   onTouchMove(callback: JoysticCallback) {
-      this.onTouchMoveCallback = callback;
-  };
+    this.onTouchMoveCallback = callback;
+  }
 
   onTouchEnd(callback: JoysticCallback) {
-      this.onTouchEndCallback = callback;
-  };
+    this.onTouchEndCallback = callback;
+  }
 
 }

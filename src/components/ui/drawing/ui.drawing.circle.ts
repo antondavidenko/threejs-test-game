@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { defaultPixiApp } from "../utils/app-service.util";
+import { defaultPixiApp } from '../utils/app-service.util';
 
 export type UiCirclePayload = {
   x: number;

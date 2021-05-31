@@ -1,10 +1,10 @@
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { getControls } from '../utils/';
 import { pixiUI, charactersCollection, worldComponent } from '@src/components/';
 import { TransitionsLogicEngine } from '@antondavidenko/fsm';
 import { slotMachineDefinition } from '@src/models/fsm';
 import { initAllStates } from '@src/states';
 import { AbstractScreen } from './abstract.screen';
+import { getControls } from '../utils';
 
 type ControlType = 'joystic' | 'orbit';
 

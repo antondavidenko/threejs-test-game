@@ -1,12 +1,12 @@
-import { UiCircle } from "../drawing/ui.drawing.circle";
+import { UiCircle } from '../drawing/ui.drawing.circle';
 import { UiText } from '../drawing/ui.drawing.text';
 
 const SimpleButtonCircle = { x: 960, y: 960, radius: 60, color: 0xdadada };
-const SimpleButtonTextStyle = { fontFamily: "Arial", fontSize: 100, fill: '#000000' };
+const SimpleButtonTextStyle = { fontFamily: 'Arial', fontSize: 100, fill: '#000000' };
 
 type SimpleButtonPayload = {
   label: string;
-  callback: () => {};
+  callback: () => void;
 }
 
 export class UiSimpleButton {

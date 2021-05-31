@@ -32,7 +32,7 @@ class PixiUI {
     this.app.renderer.view.id = 'pixi-canvas';
     this.app.view.style.setProperty('position', 'absolute');
     this.app.view.style.setProperty('top', '0px');
-    defaultPixiApp.set(this.app)
+    defaultPixiApp.set(this.app);
 
     this.drawDefaultUi();
     window.onresize = this.resize.bind(this);
@@ -74,16 +74,16 @@ class PixiUI {
   }
 
   onTouchStart(callback: UiCallback) {
-      this.onTouchStartCallback = callback;
-  };
+    this.onTouchStartCallback = callback;
+  }
 
   onTouchMove(callback: UiCallback) {
-      this.onTouchMoveCallback = callback;
-  };
+    this.onTouchMoveCallback = callback;
+  }
 
   onTouchEnd(callback: UiCallback) {
-      this.onTouchEndCallback = callback;
-  };
+    this.onTouchEndCallback = callback;
+  }
 
 }
 

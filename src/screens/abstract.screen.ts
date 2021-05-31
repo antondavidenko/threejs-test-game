@@ -1,7 +1,7 @@
 import * as THREE from 'three';
-import CONFIG from '../models/game.config.json';
 import Stats from 'three/examples/jsm/libs/stats.module';
-import { updateShaderMaterial, updateFPS, getCamera, getRender, setLight } from '../utils/';
+import CONFIG from '../models/game.config.json';
+import { updateShaderMaterial, updateFPS, getCamera, getRender, setLight } from '../utils';
 
 export class AbstractScreen {
 

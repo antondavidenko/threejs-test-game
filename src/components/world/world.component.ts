@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { addTrees } from './utils/add-trees';
 import { addSkyBox } from './utils/addSkyBox';
-import { createTerrainLayer } from './utils/CreateTerrainLayer';
+import { createTerrainLayer } from './utils/createTerrainLayer';
 
 export const GROUND_SCALE = 200;
 export const DETAILS = 128;
@@ -14,7 +14,8 @@ function planeMaterial(fileName: string): THREE.MeshPhongMaterial {
   const material = new THREE.MeshPhongMaterial({ color: 0xffffff });
   material.map = new THREE.TextureLoader().load(getTexture(fileName));
   material.map.repeat.set(10, 10);
-  material.map.wrapS = material.map.wrapT = THREE.RepeatWrapping;
+  material.map.wrapS = THREE.RepeatWrapping;
+  material.map.wrapT = THREE.RepeatWrapping;
   return material;
 }
 
@@ -22,7 +23,8 @@ function waterMaterial(fileName: string): THREE.MeshPhongMaterial {
   const material = new THREE.MeshPhongMaterial({ color: 0xffffff });
   material.map = new THREE.TextureLoader().load(getTexture(fileName));
   material.map.repeat.set(10, 10);
-  material.map.wrapS = material.map.wrapT = THREE.RepeatWrapping;
+  material.map.wrapS = THREE.RepeatWrapping;
+  material.map.wrapT = THREE.RepeatWrapping;
   material.transparent = true;
   material.opacity = 0.75;
   return material;
@@ -47,9 +49,9 @@ class WorldComponent {
   getTerrainHigh(x: number, y: number): number {
     const raycast = new THREE.Raycaster();
     const from = new THREE.Vector3(x, 1000, y);
-    var to = new THREE.Vector3(0, -1, 0);
+    const to = new THREE.Vector3(0, -1, 0);
     raycast.set(from, to.normalize());
-    var intersection = raycast.intersectObject(this.terrain, true);
+    const intersection = raycast.intersectObject(this.terrain, true);
     return intersection[0] ? 1000 - this.findMaxDistance(intersection) : 0;
   }
 
