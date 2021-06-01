@@ -1,5 +1,5 @@
 import { StateActions, TransitionsLogicEngine } from '@antondavidenko/fsm';
-import { IStateContext } from '../screens/main.screen';
+import { IStateContext } from '@src/app';
 import { LevelStates } from '../models/fsm/fsm.enum';
 import { getGameplayStateActions } from './gameplay.state-actions';
 import { getInitStateActions } from './init.state-actions';

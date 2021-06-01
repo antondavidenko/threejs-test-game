@@ -1,4 +1,37 @@
 {
+  "lights": [
+    {
+      "type": "PointLight",
+      "color": "0xffffff",
+      "intensity": 1,
+      "position": {
+        "x": 5,
+        "y": 5,
+        "z": 5
+      },
+      "shadow": {
+        "castShadow": true,
+        "mapSize": {
+          "width": 512,
+          "height": 512
+        },
+        "camera": {
+          "near": 0.5,
+          "far": 5000
+        }
+      }
+    },
+    {
+      "type": "AmbientLight",
+      "color": "0xffffff",
+      "intensity": 0.5
+    }
+  ],
+  "camera": {
+    "fov": 75,
+    "near": 0.1,
+    "far": 1000
+  },
   "debug": {
     "stats": true,
     "counterFPS": true

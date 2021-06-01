@@ -1,7 +1,7 @@
 import { StateActions } from '@antondavidenko/fsm';
 import { charactersCollection } from '@src/components';
 import { UiEvent } from '@src/components/ui/ui.pixi.component';
-import { IStateContext } from '../screens/main.screen';
+import { IStateContext } from '@src/app';
 import { LevelEvents } from '../models/fsm/fsm.enum';
 
 export function getGameplayStateActions(context: IStateContext): StateActions {
