@@ -4,7 +4,7 @@ language: TypeScript
  
 framework: THREE JS
 
-Demo: http://antondavidenko.com/games/arpg3d_v2/
+Demo: http://antondavidenko.com/games/arpg3d_v3/
 
 
 # Setup
