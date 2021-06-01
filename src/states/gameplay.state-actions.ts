@@ -21,6 +21,8 @@ export function getGameplayStateActions(context: IStateContext): StateActions {
         charactersCollection.onPressA();
       } else if (event.buttonB) {
         charactersCollection.onPressB();
+      } else if (event.buttonC) {
+        charactersCollection.onPressC();
       }
     },
   };

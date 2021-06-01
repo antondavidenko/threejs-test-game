@@ -1,9 +1,8 @@
 import { Character } from '@antondavidenko/modular-character-threejs';
 import { enemyConfig, defaultAnimationId } from '../characters.model';
+import { AbstractCharacter } from './abstract-character.control';
 
-class EnemiesCharacters {
-
-  private character: Character;
+class EnemiesCharacters extends AbstractCharacter {
 
   init(scene: THREE.Scene): void {
     this.character = new Character(scene, enemyConfig, defaultAnimationId, () => {
@@ -12,7 +11,7 @@ class EnemiesCharacters {
   }
 
   update(): void {
-    if (this.character && this.character.getIsReady()) {
+    if (this.character && this.character.getIsReady() && this.shouldUpdate) {
       this.character.update();
       this.character.rotation.x = 0;
     }

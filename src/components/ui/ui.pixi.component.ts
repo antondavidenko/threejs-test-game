@@ -9,6 +9,7 @@ export type UiEvent = {
   joystic: JoysticEvent,
   buttonA: boolean,
   buttonB: boolean,
+  buttonC: boolean,
 };
 
 export type UiCallback = (event: UiEvent) => void
@@ -18,6 +19,7 @@ class PixiUI {
   private app: PIXI.Application;
   private buttonA: UiSimpleButton;
   private buttonB: UiSimpleButton;
+  private buttonC: UiSimpleButton;
   private joystic: UiSimpleJoystic;
   private logo: UiImage;
 
@@ -42,12 +44,13 @@ class PixiUI {
   drawDefaultUi(): void {
     this.buttonA = new UiSimpleButton({ label: 'A', callback: this.onButtonPressed.bind(this, 'A') });
     this.buttonB = new UiSimpleButton({ label: 'B', callback: this.onButtonPressed.bind(this, 'B') });
+    this.buttonC = new UiSimpleButton({ label: 'C', callback: this.onButtonPressed.bind(this, 'C') });
     this.joystic = new UiSimpleJoystic();
     this.joystic.onTouchEnd((event: JoysticEvent) => {
-      this.onTouchEndCallback({ joystic: event, buttonA: false, buttonB: false });
+      this.onTouchEndCallback({ joystic: event, buttonA: false, buttonB: false, buttonC: false });
     });
     this.joystic.onTouchMove((event: JoysticEvent) => {
-      this.onTouchMoveCallback({ joystic: event, buttonA: false, buttonB: false });
+      this.onTouchMoveCallback({ joystic: event, buttonA: false, buttonB: false, buttonC: false });
     });
     this.logo = new UiImage('textures/logo.png');
   }
@@ -60,6 +63,7 @@ class PixiUI {
   private resize(): void {
     this.buttonA.setXY(window.innerWidth - 300, window.innerHeight - 100);
     this.buttonB.setXY(window.innerWidth - 100, window.innerHeight - 100);
+    this.buttonC.setXY(window.innerWidth - 100, window.innerHeight - 300);
     this.joystic.setXY(220, window.innerHeight - 180);
     this.logo.setXY(window.innerWidth - 100, 150);
     this.app.view.style.setProperty('height', `${window.innerHeight}px`);
@@ -69,7 +73,7 @@ class PixiUI {
 
   private onButtonPressed(buttonId: string): void {
     const joysticPayload = { joystic: { x: 0, y: 0, angle: 0 } };
-    const buttonsPayload = { buttonA: buttonId === 'A', buttonB: buttonId === 'B' };
+    const buttonsPayload = { buttonA: buttonId === 'A', buttonB: buttonId === 'B', buttonC: buttonId === 'C' };
     this.onTouchStartCallback({ ...joysticPayload, ...buttonsPayload });
   }
 

@@ -11,19 +11,33 @@ class CharactersCollection {
   }
 
   selected(): Character {
-    return playerCharacter.character;
+    return playerCharacter.getCharacter();
   }
 
   onTouchMove(forward: number, turn: number): void {
     playerCharacter.move(forward, turn);
   }
 
-  async onPressB() {
+  onPressB() {
     playerCharacter.jump();
   }
 
-  async onPressA() {
+  onPressA() {
     playerCharacter.hit();
+    const playerPos = playerCharacter.getCharacter().position;
+    const distance = playerPos.distanceTo(enemiesCharacters.getCharacter().position);
+    if (distance <= 2) {
+      enemiesCharacters.die();
+    }
+  }
+
+  onPressC() {
+    playerCharacter.wave();
+    const playerPos = playerCharacter.getCharacter().position;
+    const distance = playerPos.distanceTo(friendsCharacters.getCharacter().position);
+    if (distance <= 2) {
+      friendsCharacters.wave();
+    }
   }
 
   private update(): void {
