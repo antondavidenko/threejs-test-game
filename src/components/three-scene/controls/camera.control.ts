@@ -1,4 +1,4 @@
-import { charactersCollection } from '@src/components/characters-collection.component';
+import { Character } from '@antondavidenko/modular-character-threejs';
 import * as THREE from 'three';
 
 type CameraConfig = {
@@ -17,15 +17,15 @@ class CameraControl {
     this.updateCamera = updateCamera;
   }
 
-  update(): void {
-    if (charactersCollection.selected().getIsReady() && this.updateCamera) {
-      const pos = charactersCollection.selected().position.clone();
-      const angle = charactersCollection.selected().rotation.y;
+  update(cameraTarget: Character): void {
+    if (cameraTarget && cameraTarget.getIsReady() && this.updateCamera) {
+      const pos = cameraTarget.position.clone();
+      const angle = cameraTarget.rotation.y;
       pos.y += 2;
       pos.z -= 5 * Math.cos(angle);
       pos.x -= 4 * Math.sin(angle);
       this.camera.position.lerp(pos, 0.05);
-      this.camera.lookAt(charactersCollection.selected().position);
+      this.camera.lookAt(cameraTarget.position);
     }
   }
 

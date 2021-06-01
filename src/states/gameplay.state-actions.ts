@@ -18,9 +18,9 @@ export function getGameplayStateActions(context: IStateContext): StateActions {
     },
     touchStart: (event: UiEvent) => {
       if (event.buttonA) {
-        charactersCollection.onHit();
+        charactersCollection.onPressA();
       } else if (event.buttonB) {
-        charactersCollection.onJump();
+        charactersCollection.onPressB();
       }
     },
   };

@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { charactersCollection, worldComponent } from '@src/components/';
+import { Character } from '@antondavidenko/modular-character-threejs';
 import CONFIG from '@src/models/game.config.json';
 import { updateFPS } from '@src/utils';
 import { ControlType } from '@src/app';
@@ -9,6 +9,7 @@ class ThreeScene {
 
   private scene: THREE.Scene;
   private renderer: THREE.WebGLRenderer;
+  private cameraTarget: Character;
 
   init(controlType: ControlType): void {
     this.scene = new THREE.Scene();
@@ -18,12 +19,19 @@ class ThreeScene {
     window.addEventListener('resize', this.onWindowResize.bind(this), false);
     statsControl.init(CONFIG.debug.stats);
     orbitControl.init(controlType === 'orbit', this.renderer);
-    this.addSceneObjects();
-    this.animate();
+    this.update();
   }
 
   getDomElement(): HTMLCanvasElement {
     return this.renderer.domElement;
+  }
+
+  getScene(): THREE.Scene {
+    return this.scene;
+  }
+
+  setCameraTarget(cameraTarget: Character): void {
+    this.cameraTarget = cameraTarget;
   }
 
   private onWindowResize(): void {
@@ -36,23 +44,15 @@ class ThreeScene {
     this.renderer.render(this.scene, cameraControl.getCamera());
   }
 
-  private addSceneObjects(): void {
-    worldComponent.init(this.scene);
-    charactersCollection.init(this.scene, () => {
-      cameraControl.getCamera().lookAt(charactersCollection.selected().position);
-    });
-  }
-
-  private animate(): void {
+  private update(): void {
     if (CONFIG.debug.counterFPS) {
       updateFPS();
     }
     statsControl.update();
     this.renderScreen();
-    requestAnimationFrame(this.animate.bind(this));
     orbitControl.update();
-    cameraControl.update();
-    charactersCollection.update();
+    cameraControl.update(this.cameraTarget);
+    requestAnimationFrame(this.update.bind(this));
   }
 
 }
